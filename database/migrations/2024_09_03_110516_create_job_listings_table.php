@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Employer;
+use App\Models\Tag;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,6 +16,8 @@ return new class extends Migration
         Schema::create('job_listings', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Employer::class);
+            $table->foreignIdFor(Tag::class);
+
             $table->string('title');
             $table->String('salary');
             $table->timestamps();
