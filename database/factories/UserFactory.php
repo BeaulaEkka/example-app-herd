@@ -34,6 +34,7 @@ class UserFactory extends Factory
         ];
     }
 
+    //User::factory()->admin()->create()
     public function admin(): static
     {
         return $this->state(fn(array $attributes) => [
