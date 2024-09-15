@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Job;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
 class JobSeeder extends Seeder
@@ -12,6 +13,9 @@ class JobSeeder extends Seeder
      */
     public function run(): void
     {
-        Job::factory(200)->create();
+        Job::factory(200)->create()->each(function ($job) {
+            $tags = Tag::factory(3)->create();
+            $job->tags()->attach($tags->pluck('id')->toArray());
+        });
     }
 }
