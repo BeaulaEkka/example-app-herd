@@ -2,13 +2,13 @@
     <x-slot:heading>
         Job Details
     </x-slot:heading>
-    <h2 class="font-semibold text-blue-600 text-xl mb-4">{{ $job['title'] }}</h2>
+    <h2 class="font-semibold text-blue-600 text-xl mb-4">{{ $job->title }}</h2>
     <h3><strong>Company: </strong>{{ $job->employer->name }}</h3>
-    <p>This job pays {{ $job['salary'] }} per year.</p>
+    <p>This job pays {{ $job->salary }} per year.</p>
     <h3 class="font-bold text-md py-2">Job Description:</h3>
-    <p>{{ $job['description'] }} </p>
+    <p>{{ $job->description }} </p>
     <h3 class="font-bold text-md py-2">Location</h3>
-    <p>{{ $job['location'] }}</p>
+    <p>{{ $job->location }}</p>
     <div class="my-8">
         @isset($tagNames)
             @if ($tagNames)
@@ -23,8 +23,8 @@
         @else
             <p>No tags available.</p>
         @endisset
-        {{-- @foreach ($tagNames as $tag)
-            {{ $tag }}
-        @endforeach --}}
+
     </div>
+    <div class="flex justify-end"><x-button href="/jobs/{{ $job->id }}/edit">Edit Job</x-button></div>
+
 </x-layout>

@@ -16,10 +16,8 @@ Route::get('/jobs', function () {
 
     ]);
 });
-
-//jobs.create
 Route::get('/jobs/create', function () {
-    $tags = Tag::distinct()->get(['id', 'name']);
+    $tags = Tag::all();
     return view('jobs.create', compact('tags'));
 });
 
@@ -36,6 +34,16 @@ Route::get('/jobs/{id}', function ($id) {
     return view('jobs.show', compact('job', 'tagNames'));
 });
 
+//edit
+Route::get('/jobs/{id}/edit', function ($id) {
+    $job = Job::with('tags', 'employer')->findOrFail($id);
+    $allTags = Tag::all(); // Get all tags to populate the select options
+    $jobTagIds = $job->tags ? $job->tags->pluck('id')->toArray() : [];
+    dd($jobTagIds);
+
+    return view('jobs.edit', compact('job', 'allTags', 'jobTagIds'));
+});
+
 Route::post('/jobs', function (Request $request) {
 //skipped validation
 
@@ -44,7 +52,7 @@ Route::post('/jobs', function (Request $request) {
         'description' => 'required|string',
         'salary' => 'required|string|max:255',
         'location' => 'required|string|max:255',
-        'tags' => 'required|array',
+        'tags' => 'nullable|array',
         'tags.*' => 'exists:tags,id', // Validate each tag ID
     ]);
     $jobListing = Job::create([
