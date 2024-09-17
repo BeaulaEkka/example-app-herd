@@ -33,9 +33,15 @@
 
                                     <input type="text" name="title" id="title"
                                         class="block flex-1 border-0 bg-transparent py-1.5  px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                        placeholder="Teacher">
+                                        placeholder="Teacher" required>
                                 </div>
                             </div>
+                            <div class="mt-2">
+                                @error('title')
+                                    <p class="text-red-500 text-xs font-semibold">{{ $message }}</p>
+                                @enderror
+                            </div>
+
                         </div>
 
                         <div class="sm:col-span-4">
@@ -47,9 +53,15 @@
 
                                     <textarea type="text" name="description" id="description"
                                         class="block flex-1 border-0 bg-transparent py-1.5  px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                        placeholder="Job Description"></textarea>
+                                        placeholder="Job Description" required></textarea>
+                                </div>
+                                <div class="mt-2">
+                                    @error('description')
+                                        <p class="text-red-500 text-xs font-semibold">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="sm:col-span-4">
@@ -61,8 +73,13 @@
 
                                     <input type="text" name="salary" id="salary"
                                         class="block flex-1 border-0 bg-transparent py-1.5  px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                        placeholder="€60000 per year">
+                                        placeholder="€60000 per year" required>
                                 </div>
+                            </div>
+                            <div class="mt-2">
+                                @error('salary')
+                                    <p class="text-red-500 text-xs font-semibold">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 
@@ -75,8 +92,13 @@
 
                                     <input type="text" name="location" id="location"
                                         class="block flex-1 border-0 bg-transparent py-1.5  px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                        placeholder="Rotterdam">
+                                        placeholder="Rotterdam" required>
                                 </div>
+                            </div>
+                            <div class="mt-2">
+                                @error('location')
+                                    <p class="text-red-500 text-xs font-semibold">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 
@@ -96,11 +118,17 @@
                             <label for="tags" class="block text-sm font-medium leading-6 text-gray-900">Tags</label>
                             <div class="mt-2">
                                 <select name="tags[]" id="tags" multiple
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    required>
                                     @foreach ($tags as $tag)
                                         <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="mt-2">
+                                @error('tags')
+                                    <p class="text-red-500 text-xs font-semibold">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 

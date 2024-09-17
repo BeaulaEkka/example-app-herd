@@ -44,7 +44,7 @@ Route::post('/jobs', function (Request $request) {
         'description' => 'required|string',
         'salary' => 'required|string|max:255',
         'location' => 'required|string|max:255',
-        'tags' => 'nullable|array',
+        'tags' => 'required|array',
         'tags.*' => 'exists:tags,id', // Validate each tag ID
     ]);
     $jobListing = Job::create([

@@ -135,9 +135,10 @@
                     <h3 class="text-2xl font-bold tracking-tight text-gray-900">
                         {{ $heading ?? ' Job Listing Website' }}
                     </h3>
-                    <a href="/jobs/create"
+                    {{-- <a href="/jobs/create"
                         class="bg-indigo-600 hover:bg-indigo-900 px-4 py-2 rounded-md shadow-md text-white font-semibold">Create
-                        Job</a>
+                        Job</a> --}}
+                    <x-button href="/jobs/create">Create Job</x-button>
                 </div>
 
                 {{-- </div> --}}
