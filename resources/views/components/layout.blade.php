@@ -11,7 +11,6 @@
 
 <body>
 
-
     <html class="h-full bg-gray-100">
 
     <body class="h-full">
@@ -63,8 +62,6 @@
                                                 alt="">
                                         </button>
                                     </div>
-
-
 
                                 </div>
                             </div>
@@ -132,12 +129,18 @@
                 </div>
             </nav>
 
-            <header class="bg-white shadow">
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                    <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+            <header class="bg-white shadow ">
+                {{-- <div class="flex justify-between items-center border border-red-600 w-[80%] mx-auto"> --}}
+                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center">
+                    <h3 class="text-2xl font-bold tracking-tight text-gray-900">
                         {{ $heading ?? ' Job Listing Website' }}
-                    </h1>
+                    </h3>
+                    <a href="/jobs/create"
+                        class="bg-indigo-600 hover:bg-indigo-900 px-4 py-2 rounded-md shadow-md text-white font-semibold">Create
+                        Job</a>
                 </div>
+
+                {{-- </div> --}}
             </header>
             <main>
                 <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
