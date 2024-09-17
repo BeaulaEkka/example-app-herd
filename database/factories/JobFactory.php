@@ -23,6 +23,7 @@ class JobFactory extends Factory
             'description' => fake()->text(),
             'location' => fake()->city(),
             'salary' => fake()->numberBetween(10000, 100000),
+            
 
         ];
     }

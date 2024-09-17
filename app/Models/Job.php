@@ -20,7 +20,7 @@ class Job extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class, foreignPivotKey: 'Job_listing_id');
+        return $this->belongsToMany(Tag::class, 'job_tag', 'job_listing_id', 'tag_id');
 
     }
 }

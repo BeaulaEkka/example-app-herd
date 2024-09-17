@@ -80,7 +80,7 @@
                             </div>
                         </div>
 
-                        <div class="sm:col-span-4">
+                        {{-- <div class="sm:col-span-4">
                             <label for="tags" class="block text-sm font-medium leading-6 text-gray-900">Tags</label>
                             <div class="mt-2">
                                 <div
@@ -90,6 +90,17 @@
                                         class="block flex-1 border-0 bg-transparent py-1.5  px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                         placeholder="Health">
                                 </div>
+                            </div>
+                        </div> --}}
+                        <div class="sm:col-span-4">
+                            <label for="tags" class="block text-sm font-medium leading-6 text-gray-900">Tags</label>
+                            <div class="mt-2">
+                                <select name="tags[]" id="tags" multiple
+                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    @foreach ($tags as $tag)
+                                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Job;
+use App\Models\Tag;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -14,26 +16,48 @@ Route::get('/jobs', function () {
 
     ]);
 });
+
+//jobs.create
 Route::get('/jobs/create', function () {
-    return view('jobs.create');
+    $tags = Tag::distinct()->get(['id', 'name']);
+    return view('jobs.create', compact('tags'));
 });
 
+//jobs.show
 Route::get('/jobs/{id}', function ($id) {
-    $job = Job::with('tags')->find($id);
-    return view('jobs.show', ['job' => $job]);
+    $job = Job::with('tags', 'employer')->findOrFail($id)->fresh('tags');
+    $tags = $job->toArray()['tags'];
+
+    $tagNames = array_map(function ($tag) {
+        return $tag['name'];
+    }, $tags);
+
+    // dd($tagNames);
+    return view('jobs.show', compact('job', 'tagNames'));
 });
 
-Route::post('/jobs', function () {
+Route::post('/jobs', function (Request $request) {
 //skipped validation
-    Job::create([
-        'title' => request('title'),
-        'description' => request('description'),
-        'salary' => request('salary'),
-        'location' => request('location'),
-        'tags' => request('tags'),
+
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'salary' => 'required|string|max:255',
+        'location' => 'required|string|max:255',
+        'tags' => 'nullable|array',
+        'tags.*' => 'exists:tags,id', // Validate each tag ID
+    ]);
+    $jobListing = Job::create([
+        'title' => $request->input('title'),
+        'description' => $request->input('description'),
+        'salary' => $request->input('salary'),
+        'location' => $request->input('location'),
         'employer_id' => 1,
 
     ]);
+    if ($request->has('tags')) {
+        $jobListing->tags()->sync($request->input('tags'));
+    }
     return redirect('/jobs');
 });
 
