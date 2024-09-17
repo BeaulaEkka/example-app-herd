@@ -90,7 +90,7 @@
                                 <div
                                     class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
 
-                                    <input type="text" name="location" id="location" value={{ $job->location }}
+                                    <input type="text" name="location" id="location" value="{{ $job->location }}"
                                         class="block flex-1 border-0 bg-transparent py-1.5  px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                         placeholder="Rotterdam" required>
                                 </div>
@@ -102,26 +102,17 @@
                             </div>
                         </div>
 
-                        {{-- <div class="sm:col-span-4">
-                            <label for="tags" class="block text-sm font-medium leading-6 text-gray-900">Tags</label>
-                            <div class="mt-2">
-                                <div
-                                    class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-
-                                    <input type="text" name="tags" id="tags"
-                                        class="block flex-1 border-0 bg-transparent py-1.5  px-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                        placeholder="Health">
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="sm:col-span-4">
                             <label for="tags" class="block text-sm font-medium leading-6 text-gray-900">Tags</label>
                             <div class="mt-2">
-                                <select name="tags[]" id="tags" multiple class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                                    @foreach ($allTags as $tag)
-                                        <option value="{{ $tag->id }}" {{ in_array($tag->id, $jobTagIds) ? 'selected' : '' }}>
+                                <select name="tags[]" id="tags" value="{{ $job->tags }}" multiple
+                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    required>
+                                    @foreach ($job->tags as $tag)
+                                        <checkbox value="{{ $job->tags }}"
+                                            {{ in_array($tag->id, $jobTagIds) ? 'selected' : '' }}>
                                             {{ $tag->name }}
-                                        </option>
+                                        </checkbox>
                                     @endforeach
                                 </select>
                             </div>
@@ -131,7 +122,6 @@
                                 @enderror
                             </div>
                         </div>
-
 
                     </div>
                 </div>

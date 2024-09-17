@@ -17,7 +17,7 @@ Route::get('/jobs', function () {
     ]);
 });
 Route::get('/jobs/create', function () {
-    $tags = Tag::all();
+    $tags = Tag::all()->unique('name');
     return view('jobs.create', compact('tags'));
 });
 
@@ -37,11 +37,10 @@ Route::get('/jobs/{id}', function ($id) {
 //edit
 Route::get('/jobs/{id}/edit', function ($id) {
     $job = Job::with('tags', 'employer')->findOrFail($id);
-    $allTags = Tag::all(); // Get all tags to populate the select options
+    $tags = Tag::all()->unique('name'); // Get all tags to populate the select options
     $jobTagIds = $job->tags ? $job->tags->pluck('id')->toArray() : [];
-    dd($jobTagIds);
 
-    return view('jobs.edit', compact('job', 'allTags', 'jobTagIds'));
+    return view('jobs.edit', compact('job', 'tags', 'jobTagIds'));
 });
 
 Route::post('/jobs', function (Request $request) {
