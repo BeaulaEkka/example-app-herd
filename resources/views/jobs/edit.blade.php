@@ -105,16 +105,15 @@
                         <div class="sm:col-span-4">
                             <label for="tags" class="block text-sm font-medium leading-6 text-gray-900">Tags</label>
                             <div class="mt-2">
-                                <select name="tags[]" id="tags" value="{{ $job->tags }}" multiple
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    required>
-                                    @foreach ($job->tags as $tag)
-                                        <checkbox value="{{ $job->tags }}"
-                                            {{ in_array($tag->id, $jobTagIds) ? 'selected' : '' }}>
-                                            {{ $tag->name }}
-                                        </checkbox>
+                                <div class="my-8">
+                                    @foreach ($tags as $tag)
+                                        <label class="inline-flex items-center mb-2">
+                                            <input type="checkbox" name="tags[]" value="{{ $tag->id }}"
+                                                {{ in_array($tag->id, $selectedTags) ? 'checked' : '' }}>
+                                            <span class="ml-2 mr-2 capitalize">{{ $tag->name }}</span>
+                                        </label>
                                     @endforeach
-                                </select>
+                                </div>
                             </div>
                             <div class="mt-2">
                                 @error('tags')

@@ -37,10 +37,13 @@ Route::get('/jobs/{id}', function ($id) {
 //edit
 Route::get('/jobs/{id}/edit', function ($id) {
     $job = Job::with('tags', 'employer')->findOrFail($id);
-    $tags = Tag::all()->unique('name'); // Get all tags to populate the select options
-    $jobTagIds = $job->tags ? $job->tags->pluck('id')->toArray() : [];
+    $tags = Tag::all()->unique('name');
+    $selectedTags = $job->toArray()['tags'];
+    // $selectedTagIds = $job->tags->pluck('id')->toArray();
+    // dd($selectedTags);
+    // $jobTagIds = $job->tags ? $job->tags->pluck('id')->toArray() : [];
 
-    return view('jobs.edit', compact('job', 'tags', 'jobTagIds'));
+    return view('jobs.edit', compact('job', 'tags', 'selectedTags'));
 });
 
 Route::post('/jobs', function (Request $request) {
