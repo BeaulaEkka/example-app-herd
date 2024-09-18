@@ -109,7 +109,7 @@
                                     @foreach ($tags as $tag)
                                         <label class="inline-flex items-center mb-2">
                                             <input type="checkbox" name="tags[]" value="{{ $tag->id }}"
-                                                {{ in_array($tag->id, $selectedTags) ? 'checked' : '' }}>
+                                                {{ in_array($tag->id, $selectedTagIds) ? 'checked' : '' }}>
                                             <span class="ml-2 mr-2 capitalize">{{ $tag->name }}</span>
                                         </label>
                                     @endforeach

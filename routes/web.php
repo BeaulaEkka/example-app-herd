@@ -38,12 +38,13 @@ Route::get('/jobs/{id}', function ($id) {
 Route::get('/jobs/{id}/edit', function ($id) {
     $job = Job::with('tags', 'employer')->findOrFail($id);
     $tags = Tag::all()->unique('name');
-    $selectedTags = $job->toArray()['tags'];
-    // $selectedTagIds = $job->tags->pluck('id')->toArray();
-    // dd($selectedTags);
+    // $selectedTags = $job->toArray()['tags'];
+    $selectedTagIds = collect($job->toArray()['tags'])->pluck('id')->toArray();
+
+    // dd($selectedTagIds);
     // $jobTagIds = $job->tags ? $job->tags->pluck('id')->toArray() : [];
 
-    return view('jobs.edit', compact('job', 'tags', 'selectedTags'));
+    return view('jobs.edit', compact('job', 'tags', 'selectedTagIds'));
 });
 
 Route::post('/jobs', function (Request $request) {
