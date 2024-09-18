@@ -34,22 +34,11 @@ Route::get('/jobs/{id}', function ($id) {
     return view('jobs.show', compact('job', 'tagNames'));
 });
 
-//edit
-Route::get('/jobs/{id}/edit', function ($id) {
-    $job = Job::with('tags', 'employer')->findOrFail($id);
-    $tags = Tag::all()->unique('name');
-    // $selectedTags = $job->toArray()['tags'];
-    $selectedTagIds = collect($job->toArray()['tags'])->pluck('id')->toArray();
 
-    // dd($selectedTagIds);
-    // $jobTagIds = $job->tags ? $job->tags->pluck('id')->toArray() : [];
 
-    return view('jobs.edit', compact('job', 'tags', 'selectedTagIds'));
-});
+
 
 Route::post('/jobs', function (Request $request) {
-//skipped validation
-
     $request->validate([
         'title' => 'required|string|max:255',
         'description' => 'required|string',
@@ -70,6 +59,57 @@ Route::post('/jobs', function (Request $request) {
         $jobListing->tags()->sync($request->input('tags'));
     }
     return redirect('/jobs');
+});
+
+
+//edit
+Route::get('/jobs/{id}/edit', function ($id) {
+    $job = Job::with('tags', 'employer')->findOrFail($id);
+    $tags = Tag::all()->unique('name');
+
+    $selectedTagIds = collect($job->toArray()['tags'])->pluck('id')->toArray();
+
+    return view('jobs.edit', compact('job', 'tags', 'selectedTagIds'));
+});
+
+//jobs.update
+Route::patch('/jobs/{id}', function ($id) {
+    //validate
+    request()->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'salary' => 'required|string|max:255',
+        'location' => 'required|string|max:255',
+        'tags' => 'nullable|array',
+        'tags.*' => 'exists:tags,id', // Validate each tag ID
+    ]);
+    //authorize
+    //update the job
+    $job = Job::findOrFail($id);
+
+    $job->update([
+    'title' => request('title'),
+    'description' => request('description'),
+    'salary' => request('salary'),
+    'location' => request('location'),
+    
+
+    ]);
+    //persist
+    if (request()->has('tags')) {
+        $job->tags()->sync(request('tags'));
+    }
+    //redirect to the job page
+    return redirect('/jobs/' . $job->id);
+});
+//Destroy
+Route::delete('/jobs/{id}', function ($id) {
+    //authorize
+    //delete the job
+    Job::findOrFail($id)->delete();
+
+    return redirect('/jobs');
+
 });
 
 Route::get('/contact', function () {
