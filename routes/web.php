@@ -22,17 +22,31 @@ Route::get('/jobs/create', function () {
 });
 
 //jobs.show
-Route::get('/jobs/{id}', function ($id) {
-    $job = Job::with('tags', 'employer')->findOrFail($id)->fresh('tags');
-    $tags = $job->toArray()['tags'];
+// Route::get('/jobs/{id}', function ($id) {
+//     $job = Job::with('tags', 'employer')->findOrFail($id)->fresh('tags');
+//     $tags = $job->toArray()['tags'];
+
+//     $tagNames = array_map(function ($tag) {
+//         return $tag['name'];
+//     }, $tags);
+
+//     // dd($tagNames);
+//     return view('jobs.show', compact('job', 'tagNames'));
+// });
+
+
+//RouteBinding
+Route::get('/jobs/{job}', function (Job $job) {
+        $job->load('tags','employer');
+        $tags = $job->toArray()['tags'];
 
     $tagNames = array_map(function ($tag) {
         return $tag['name'];
     }, $tags);
 
-    // dd($tagNames);
     return view('jobs.show', compact('job', 'tagNames'));
 });
+
 
 
 
@@ -63,17 +77,60 @@ Route::post('/jobs', function (Request $request) {
 
 
 //edit
-Route::get('/jobs/{id}/edit', function ($id) {
-    $job = Job::with('tags', 'employer')->findOrFail($id);
-    $tags = Tag::all()->unique('name');
+// Route::get('/jobs/{id}/edit', function ($id) {
+//     $job = Job::with('tags', 'employer')->findOrFail($id);
+//     $tags = Tag::all()->unique('name');
 
+//     $selectedTagIds = collect($job->toArray()['tags'])->pluck('id')->toArray();
+
+//     return view('jobs.edit', compact('job', 'tags', 'selectedTagIds'));
+// });
+
+//edit-model mapping
+Route::get('/jobs/{job}/edit', function (Job $job) {
+    $job -> load('tags', 'employer');
+    $tags = Tag::all()->unique('name');
     $selectedTagIds = collect($job->toArray()['tags'])->pluck('id')->toArray();
 
     return view('jobs.edit', compact('job', 'tags', 'selectedTagIds'));
 });
 
-//jobs.update
-Route::patch('/jobs/{id}', function ($id) {
+// //jobs.update
+// Route::patch('/jobs/{id}', function ($id) {
+//     //validate
+//     request()->validate([
+//         'title' => 'required|string|max:255',
+//         'description' => 'required|string',
+//         'salary' => 'required|string|max:255',
+//         'location' => 'required|string|max:255',
+//         'tags' => 'nullable|array',
+//         'tags.*' => 'exists:tags,id', // Validate each tag ID
+//     ]);
+//     //authorize
+//     //update the job
+//     $job = Job::findOrFail($id);
+
+//     $job->update([
+//     'title' => request('title'),
+//     'description' => request('description'),
+//     'salary' => request('salary'),
+//     'location' => request('location'),
+
+
+//     ]);
+//     //persist
+//     if (request()->has('tags')) {
+//         $job->tags()->sync(request('tags'));
+//     }
+//     //redirect to the job page
+//     return redirect('/jobs/' . $job->id);
+// });
+
+
+//update-Model Binding
+
+Route::patch('/jobs/{job}', function (Job $job) {
+      //authorize
     //validate
     request()->validate([
         'title' => 'required|string|max:255',
@@ -83,16 +140,14 @@ Route::patch('/jobs/{id}', function ($id) {
         'tags' => 'nullable|array',
         'tags.*' => 'exists:tags,id', // Validate each tag ID
     ]);
-    //authorize
-    //update the job
-    $job = Job::findOrFail($id);
 
+    //update the job
     $job->update([
     'title' => request('title'),
     'description' => request('description'),
     'salary' => request('salary'),
     'location' => request('location'),
-    
+
 
     ]);
     //persist
@@ -102,11 +157,23 @@ Route::patch('/jobs/{id}', function ($id) {
     //redirect to the job page
     return redirect('/jobs/' . $job->id);
 });
-//Destroy
-Route::delete('/jobs/{id}', function ($id) {
+
+
+// //Destroy
+// Route::delete('/jobs/{id}', function ($id) {
+//     //authorize
+//     //delete the job
+//     Job::findOrFail($id)->delete();
+
+//     return redirect('/jobs');
+
+// });
+
+//Destroy-Model Binding
+Route::delete('/jobs/{job}', function (Job $job) {
     //authorize
     //delete the job
-    Job::findOrFail($id)->delete();
+    $job->delete();
 
     return redirect('/jobs');
 

@@ -16,9 +16,6 @@ class TagFactory extends Factory
      */
     public function definition(): array
     {
-        $categories = ['Technology', 'Health', 'Business', 'Education', 'Travel', 'Science', 'Art', 'Sports'];
-        return [
-            'name' => fake()->randomElement($categories),
-        ];
+        return [];
     }
 }
