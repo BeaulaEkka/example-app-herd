@@ -23,20 +23,22 @@ Route::view('/', 'home');
 Route::view('/contact', 'contact');
 
 //shortform
-Route::controller(JobController::class)->group(function () {
-    Route::get('/jobs', 'index');
+// Route::controller(JobController::class)->group(function () {
+//     Route::get('/jobs', 'index');
 
-    Route::get('/jobs/create', 'create');
-    Route::delete('/jobs/{job}', 'destroy');
-    Route::get('/jobs/{job}', 'show');
+//     Route::get('/jobs/create', 'create');
+//     Route::delete('/jobs/{job}', 'destroy');
+//     Route::get('/jobs/{job}', 'show');
 
-    Route::get('/jobs/{job}/edit', 'edit');
-    Route::post('/jobs', 'store');
-    Route::patch('/jobs/{job}', 'update');
+//     Route::get('/jobs/{job}/edit', 'edit');
+//     Route::post('/jobs', 'store');
+//     Route::patch('/jobs/{job}', 'update');
 
-});
+// });
 
-//through
+//route-resources
+
+Route::resources('jobs', JobController::class);
 
 /** ---------------------------------------------------------------- */
 //jobs.show
