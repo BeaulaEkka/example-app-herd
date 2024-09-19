@@ -17,14 +17,21 @@ class JobController extends Controller
     }
 
     public function create()
-    {            
+    {
         $tags = Tag::all()->unique('name');
         return view('jobs.create', compact('tags'));
-        }
-    
+    }
 
-    public function show()
+    public function show(Job $job)
     {
+        $job->load('tags', 'employer');
+        $tags = $job->toArray()['tags'];
+
+        $tagNames = array_map(function ($tag) {
+            return $tag['name'];
+        }, $tags);
+
+        return view('jobs.show', compact('job', 'tagNames'));
 
     }
 
@@ -33,9 +40,13 @@ class JobController extends Controller
 
     }
 
-    public function edit()
+    public function edit(Job $job)
     {
+        $job->load('tags', 'employer');
+        $tags = Tag::all()->unique('name');
+        $selectedTagIds = collect($job->toArray()['tags'])->pluck('id')->toArray();
 
+        return view('jobs.edit', compact('job', 'tags', 'selectedTagIds'));
     }
 
     public function update()
@@ -43,8 +54,10 @@ class JobController extends Controller
 
     }
 
-    public function destroy()
+    public function destroy(Job $job)
     {
-
+        $job->delete();
+        return redirect('/jobs');
     }
+
 }

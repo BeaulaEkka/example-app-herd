@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\JobController;
 use App\Models\Job;
-use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +12,11 @@ Route::get('/', function () {
 //index
 Route::get('/jobs', [JobController::class, 'index']);
 
-Route::get('/jobs/create', [JobController::class,'create']);
+Route::get('/jobs/create', [JobController::class, 'create']);
+Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
+Route::get('/jobs/{job}', [JobController::class, 'show']);
+
+Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
 
 //jobs.show
 // Route::get('/jobs/{id}', function ($id) {
@@ -29,16 +32,16 @@ Route::get('/jobs/create', [JobController::class,'create']);
 // });
 
 //RouteBinding
-Route::get('/jobs/{job}', function (Job $job) {
-    $job->load('tags', 'employer');
-    $tags = $job->toArray()['tags'];
+// Route::get('/jobs/{job}', function (Job $job) {
+//     $job->load('tags', 'employer');
+//     $tags = $job->toArray()['tags'];
 
-    $tagNames = array_map(function ($tag) {
-        return $tag['name'];
-    }, $tags);
+//     $tagNames = array_map(function ($tag) {
+//         return $tag['name'];
+//     }, $tags);
 
-    return view('jobs.show', compact('job', 'tagNames'));
-});
+//     return view('jobs.show', compact('job', 'tagNames'));
+// });
 
 Route::post('/jobs', function (Request $request) {
     $request->validate([
@@ -74,13 +77,15 @@ Route::post('/jobs', function (Request $request) {
 // });
 
 //edit-model mapping
-Route::get('/jobs/{job}/edit', function (Job $job) {
-    $job->load('tags', 'employer');
-    $tags = Tag::all()->unique('name');
-    $selectedTagIds = collect($job->toArray()['tags'])->pluck('id')->toArray();
+// Route::get('/jobs/{job}/edit', function (Job $job) {
+//     $job->load('tags', 'employer');
+//     $tags = Tag::all()->unique('name');
+//     $selectedTagIds = collect($job->toArray()['tags'])->pluck('id')->toArray();
 
-    return view('jobs.edit', compact('job', 'tags', 'selectedTagIds'));
-});
+//     return view('jobs.edit', compact('job', 'tags', 'selectedTagIds'));
+// });
+
+/****************************** */
 
 // //jobs.update
 // Route::patch('/jobs/{id}', function ($id) {
@@ -151,16 +156,6 @@ Route::patch('/jobs/{job}', function (Job $job) {
 //     return redirect('/jobs');
 
 // });
-
-//Destroy-Model Binding
-Route::delete('/jobs/{job}', function (Job $job) {
-    //authorize
-    //delete the job
-    $job->delete();
-
-    return redirect('/jobs');
-
-});
 
 Route::get('/contact', function () {
 
