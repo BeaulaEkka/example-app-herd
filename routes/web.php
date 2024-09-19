@@ -38,7 +38,7 @@ Route::view('/contact', 'contact');
 
 //route-resources
 
-Route::resources('jobs', JobController::class);
+Route::resource('jobs', JobController::class);
 
 /** ---------------------------------------------------------------- */
 //jobs.show
