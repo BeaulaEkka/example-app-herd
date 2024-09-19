@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use App\Models\Tag;
+use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
     public function index()
     {
-        $jobs = Job::with('employer')->latest()->simplePaginate(3);
+        $jobs = Job::with('employer')->latest()->Paginate(10);
         return view('jobs.index', [
             'jobs' => $jobs,
 
@@ -35,8 +36,28 @@ class JobController extends Controller
 
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'salary' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id', // Validate each tag ID
+        ]);
+        $jobListing = Job::create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'salary' => $request->input('salary'),
+            'location' => $request->input('location'),
+            'employer_id' => 1,
+
+        ]);
+        if ($request->has('tags')) {
+            $jobListing->tags()->sync($request->input('tags'));
+        }
+        return redirect('/jobs');
 
     }
 
@@ -49,8 +70,31 @@ class JobController extends Controller
         return view('jobs.edit', compact('job', 'tags', 'selectedTagIds'));
     }
 
-    public function update()
+    public function update(Job $job)
     {
+        request()->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'salary' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id', // Validate each tag ID
+        ]);
+
+//update the job
+        $job->update([
+            'title' => request('title'),
+            'description' => request('description'),
+            'salary' => request('salary'),
+            'location' => request('location'),
+
+        ]);
+//persist
+        if (request()->has('tags')) {
+            $job->tags()->sync(request('tags'));
+        }
+//redirect to the job page
+        return redirect('/jobs/' . $job->id);
 
     }
 

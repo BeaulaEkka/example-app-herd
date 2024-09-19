@@ -1,15 +1,15 @@
 <?php
 
 use App\Http\Controllers\JobController;
-use App\Models\Job;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-});
+//this has a shorthand
+// Route::get('/', function () {
+//     return view('home');
+// });
 
-//index
+Route::view('/', 'home');
+
 Route::get('/jobs', [JobController::class, 'index']);
 
 Route::get('/jobs/create', [JobController::class, 'create']);
@@ -17,7 +17,12 @@ Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
 Route::get('/jobs/{job}', [JobController::class, 'show']);
 
 Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
+Route::post('/jobs', [JobController::class, 'store']);
+Route::patch('/jobs/{job}', [JobController::class, 'update']);
 
+Route::view('/contact', 'contact');
+
+/** ---------------------------------------------------------------- */
 //jobs.show
 // Route::get('/jobs/{id}', function ($id) {
 //     $job = Job::with('tags', 'employer')->findOrFail($id)->fresh('tags');
@@ -43,29 +48,32 @@ Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
 //     return view('jobs.show', compact('job', 'tagNames'));
 // });
 
-Route::post('/jobs', function (Request $request) {
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-        'salary' => 'required|string|max:255',
-        'location' => 'required|string|max:255',
-        'tags' => 'nullable|array',
-        'tags.*' => 'exists:tags,id', // Validate each tag ID
-    ]);
-    $jobListing = Job::create([
-        'title' => $request->input('title'),
-        'description' => $request->input('description'),
-        'salary' => $request->input('salary'),
-        'location' => $request->input('location'),
-        'employer_id' => 1,
+/** ---------------------------------------------------------------- */
+//store
+// Route::post('/jobs', function (Request $request) {
+//     $request->validate([
+//         'title' => 'required|string|max:255',
+//         'description' => 'required|string',
+//         'salary' => 'required|string|max:255',
+//         'location' => 'required|string|max:255',
+//         'tags' => 'nullable|array',
+//         'tags.*' => 'exists:tags,id', // Validate each tag ID
+//     ]);
+//     $jobListing = Job::create([
+//         'title' => $request->input('title'),
+//         'description' => $request->input('description'),
+//         'salary' => $request->input('salary'),
+//         'location' => $request->input('location'),
+//         'employer_id' => 1,
 
-    ]);
-    if ($request->has('tags')) {
-        $jobListing->tags()->sync($request->input('tags'));
-    }
-    return redirect('/jobs');
-});
+//     ]);
+//     if ($request->has('tags')) {
+//         $jobListing->tags()->sync($request->input('tags'));
+//     }
+//     return redirect('/jobs');
+// });
 
+/** ---------------------------------------------------------------- */
 //edit
 // Route::get('/jobs/{id}/edit', function ($id) {
 //     $job = Job::with('tags', 'employer')->findOrFail($id);
@@ -85,9 +93,8 @@ Route::post('/jobs', function (Request $request) {
 //     return view('jobs.edit', compact('job', 'tags', 'selectedTagIds'));
 // });
 
-/****************************** */
-
-// //jobs.update
+/***---------------------------------------------------------------- */
+// //update
 // Route::patch('/jobs/{id}', function ($id) {
 //     //validate
 //     request()->validate([
@@ -118,35 +125,35 @@ Route::post('/jobs', function (Request $request) {
 // });
 
 //update-Model Binding
+// Route::patch('/jobs/{job}', function (Job $job) {
+//     //authorize
+//     //validate
+//     request()->validate([
+//         'title' => 'required|string|max:255',
+//         'description' => 'required|string',
+//         'salary' => 'required|string|max:255',
+//         'location' => 'required|string|max:255',
+//         'tags' => 'nullable|array',
+//         'tags.*' => 'exists:tags,id', // Validate each tag ID
+//     ]);
 
-Route::patch('/jobs/{job}', function (Job $job) {
-    //authorize
-    //validate
-    request()->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-        'salary' => 'required|string|max:255',
-        'location' => 'required|string|max:255',
-        'tags' => 'nullable|array',
-        'tags.*' => 'exists:tags,id', // Validate each tag ID
-    ]);
+//     //update the job
+//     $job->update([
+//         'title' => request('title'),
+//         'description' => request('description'),
+//         'salary' => request('salary'),
+//         'location' => request('location'),
 
-    //update the job
-    $job->update([
-        'title' => request('title'),
-        'description' => request('description'),
-        'salary' => request('salary'),
-        'location' => request('location'),
+//     ]);
+//     //persist
+//     if (request()->has('tags')) {
+//         $job->tags()->sync(request('tags'));
+//     }
+//     //redirect to the job page
+//     return redirect('/jobs/' . $job->id);
+// });
 
-    ]);
-    //persist
-    if (request()->has('tags')) {
-        $job->tags()->sync(request('tags'));
-    }
-    //redirect to the job page
-    return redirect('/jobs/' . $job->id);
-});
-
+/** ---------------------------------------------------------------- */
 // //Destroy
 // Route::delete('/jobs/{id}', function ($id) {
 //     //authorize
@@ -157,8 +164,8 @@ Route::patch('/jobs/{job}', function (Job $job) {
 
 // });
 
-Route::get('/contact', function () {
+// Route::get('/contact', function () {
 
-    return view('contact');
+//     return view('contact');
 
-});
+// });
