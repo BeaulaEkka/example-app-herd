@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JobController;
 use App\Models\Job;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -9,17 +10,10 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/jobs', function () {
-    $jobs = Job::with('employer')->latest()->simplePaginate(3);
-    return view('jobs.index', [
-        'jobs' => $jobs,
+//index
+Route::get('/jobs', [JobController::class, 'index']);
 
-    ]);
-});
-Route::get('/jobs/create', function () {
-    $tags = Tag::all()->unique('name');
-    return view('jobs.create', compact('tags'));
-});
+Route::get('/jobs/create', [JobController::class,'create']);
 
 //jobs.show
 // Route::get('/jobs/{id}', function ($id) {
@@ -34,11 +28,10 @@ Route::get('/jobs/create', function () {
 //     return view('jobs.show', compact('job', 'tagNames'));
 // });
 
-
 //RouteBinding
 Route::get('/jobs/{job}', function (Job $job) {
-        $job->load('tags','employer');
-        $tags = $job->toArray()['tags'];
+    $job->load('tags', 'employer');
+    $tags = $job->toArray()['tags'];
 
     $tagNames = array_map(function ($tag) {
         return $tag['name'];
@@ -46,11 +39,6 @@ Route::get('/jobs/{job}', function (Job $job) {
 
     return view('jobs.show', compact('job', 'tagNames'));
 });
-
-
-
-
-
 
 Route::post('/jobs', function (Request $request) {
     $request->validate([
@@ -75,7 +63,6 @@ Route::post('/jobs', function (Request $request) {
     return redirect('/jobs');
 });
 
-
 //edit
 // Route::get('/jobs/{id}/edit', function ($id) {
 //     $job = Job::with('tags', 'employer')->findOrFail($id);
@@ -88,7 +75,7 @@ Route::post('/jobs', function (Request $request) {
 
 //edit-model mapping
 Route::get('/jobs/{job}/edit', function (Job $job) {
-    $job -> load('tags', 'employer');
+    $job->load('tags', 'employer');
     $tags = Tag::all()->unique('name');
     $selectedTagIds = collect($job->toArray()['tags'])->pluck('id')->toArray();
 
@@ -116,7 +103,6 @@ Route::get('/jobs/{job}/edit', function (Job $job) {
 //     'salary' => request('salary'),
 //     'location' => request('location'),
 
-
 //     ]);
 //     //persist
 //     if (request()->has('tags')) {
@@ -126,11 +112,10 @@ Route::get('/jobs/{job}/edit', function (Job $job) {
 //     return redirect('/jobs/' . $job->id);
 // });
 
-
 //update-Model Binding
 
 Route::patch('/jobs/{job}', function (Job $job) {
-      //authorize
+    //authorize
     //validate
     request()->validate([
         'title' => 'required|string|max:255',
@@ -143,11 +128,10 @@ Route::patch('/jobs/{job}', function (Job $job) {
 
     //update the job
     $job->update([
-    'title' => request('title'),
-    'description' => request('description'),
-    'salary' => request('salary'),
-    'location' => request('location'),
-
+        'title' => request('title'),
+        'description' => request('description'),
+        'salary' => request('salary'),
+        'location' => request('location'),
 
     ]);
     //persist
@@ -157,7 +141,6 @@ Route::patch('/jobs/{job}', function (Job $job) {
     //redirect to the job page
     return redirect('/jobs/' . $job->id);
 });
-
 
 // //Destroy
 // Route::delete('/jobs/{id}', function ($id) {
