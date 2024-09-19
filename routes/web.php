@@ -10,17 +10,33 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home');
 
-Route::get('/jobs', [JobController::class, 'index']);
+// Route::get('/jobs', [JobController::class, 'index']);
 
-Route::get('/jobs/create', [JobController::class, 'create']);
-Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
-Route::get('/jobs/{job}', [JobController::class, 'show']);
+// Route::get('/jobs/create', [JobController::class, 'create']);
+// Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
+// Route::get('/jobs/{job}', [JobController::class, 'show']);
 
-Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
-Route::post('/jobs', [JobController::class, 'store']);
-Route::patch('/jobs/{job}', [JobController::class, 'update']);
+// Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
+// Route::post('/jobs', [JobController::class, 'store']);
+// Route::patch('/jobs/{job}', [JobController::class, 'update']);
 
 Route::view('/contact', 'contact');
+
+//shortform
+Route::controller(JobController::class)->group(function () {
+    Route::get('/jobs', 'index');
+
+    Route::get('/jobs/create', 'create');
+    Route::delete('/jobs/{job}', 'destroy');
+    Route::get('/jobs/{job}', 'show');
+
+    Route::get('/jobs/{job}/edit', 'edit');
+    Route::post('/jobs', 'store');
+    Route::patch('/jobs/{job}', 'update');
+
+});
+
+//through
 
 /** ---------------------------------------------------------------- */
 //jobs.show
