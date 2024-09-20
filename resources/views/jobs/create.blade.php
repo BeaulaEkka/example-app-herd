@@ -28,7 +28,7 @@
 
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <!-- Title Field -->
-                        <div class="sm:col-span-4">
+                        <x-form-field>
                             <x-form-label for="title">Title</x-form-label>
                             <div class="mt-2">
 
@@ -38,10 +38,10 @@
                             <div class="mt-2">
                                 <x-form-error name='title' />
                             </div>
-                        </div>
+                        </x-form-field>
 
                         <!-- Description Field -->
-                        <div class="sm:col-span-4">
+                        <x-form-field>
                             <x-form-label for="description">Description</x-form-label>
                             <div class="mt-2">
                                 <div
@@ -54,10 +54,10 @@
                             <div class="mt-2">
                                 <x-form-error name='description' />
                             </div>
-                        </div>
+                        </x-form-field>
 
                         <!-- Location Field -->
-                        <div class="sm:col-span-4">
+                        <x-form-field>
                             <x-form-label for="location">Location</x-form-label>
                             <div class="mt-2">
                                 <x-form-input name="location" id="location" placeholder="Rotterdam" required />
@@ -65,10 +65,10 @@
                             <div class="mt-2">
                                 <x-form-error name='location' />
                             </div>
-                        </div>
+                        </x-form-field>
 
                         <!-- Salary Field -->
-                        <div class="sm:col-span-4">
+                        <x-form-field>
                             <x-form-label for="salary">Salary</x-form-label>
                             <div class="mt-2">
                                 <x-form-input name="salary" id="salary" placeholder="60,000" required />
@@ -76,10 +76,10 @@
                             <div class="mt-2">
                                 <x-form-error name='salary' />
                             </div>
-                        </div>
+                        </x-form-field>
 
                         <!-- Tags Field -->
-                        <div class="sm:col-span-4">
+                        <x-form-field>
                             <x-form-label for="tags">Tags</x-form-label>
                             <div class="my-8">
                                 @foreach ($tags as $tag)
@@ -92,7 +92,8 @@
                             <div class="mt-2">
                                 <x-form-error name='tags' />
                             </div>
-                        </div>
+                        </x-form-field>
+
                     </div>
                 </div>
             </div>
