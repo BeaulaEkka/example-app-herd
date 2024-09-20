@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 
 //this has a shorthand
@@ -39,6 +40,8 @@ Route::view('/contact', 'contact');
 //route-resources
 
 Route::resource('jobs', JobController::class);
+
+Route::get('/register', [RegisteredUserController::class, 'create']);
 
 /** ---------------------------------------------------------------- */
 //jobs.show
@@ -184,6 +187,4 @@ Route::resource('jobs', JobController::class);
 
 // Route::get('/contact', function () {
 
-//     return view('contact');
-
-// });
+//     return view('contact');  });
