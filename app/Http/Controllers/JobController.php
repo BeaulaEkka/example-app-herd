@@ -43,7 +43,7 @@ class JobController extends Controller
             'description' => 'required|string',
             'salary' => 'required|string|max:255',
             'location' => 'required|string|max:255',
-            'tags' => 'nullable|array',
+            'tags' => 'required|array|min:1',
             'tags.*' => 'exists:tags,id', // Validate each tag ID
         ]);
         $jobListing = Job::create([
