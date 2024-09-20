@@ -32,7 +32,7 @@
                             <x-form-label for="title">Title</x-form-label>
                             <div class="mt-2">
 
-                                <x-form-input name="title" id="title" placeholder="Teacher" required />
+                                <x-form-input name="title" id="title" placeholder="Teacher" />
 
                             </div>
                             <div class="mt-2">
@@ -60,7 +60,7 @@
                         <x-form-field>
                             <x-form-label for="location">Location</x-form-label>
                             <div class="mt-2">
-                                <x-form-input name="location" id="location" placeholder="Rotterdam" required />
+                                <x-form-input name="location" id="location" placeholder="Rotterdam" />
                             </div>
                             <div class="mt-2">
                                 <x-form-error name='location' />
@@ -71,7 +71,7 @@
                         <x-form-field>
                             <x-form-label for="salary">Salary</x-form-label>
                             <div class="mt-2">
-                                <x-form-input name="salary" id="salary" placeholder="60,000" required />
+                                <x-form-input name="salary" id="salary" placeholder="60,000" />
                             </div>
                             <div class="mt-2">
                                 <x-form-error name='salary' />
@@ -101,8 +101,9 @@
             <!-- Action Buttons -->
             <div class="mt-6 flex items-center justify-end gap-x-6">
                 <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
-                <button type="submit"
-                    class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+                {{-- <button type="submit"
+                    class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button> --}}
+                <x-form-button type='submit'>Save</x-form-button>
             </div>
         </form>
     </div>
