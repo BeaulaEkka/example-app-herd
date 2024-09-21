@@ -28,9 +28,9 @@
 
                         <!-- Email Field -->
                         <x-form-field>
-                            <x-form-label for="salary">Email</x-form-label>
+                            <x-form-label for="email">Email</x-form-label>
                             <div class="mt-2">
-                                <x-form-input name="email" id="email" type="email" />
+                                <x-form-input name="email" id="email" type="email" :value="old('email')" />
                             </div>
                             <div class="mt-2">
                                 <x-form-error name='email' />
@@ -39,7 +39,7 @@
 
                         <!-- password Field -->
                         <x-form-field>
-                            <x-form-label for="salary">Password</x-form-label>
+                            <x-form-label for="password">Password</x-form-label>
                             <div class="mt-2">
                                 <x-form-input name="password" id="password" type="password" />
                             </div>
