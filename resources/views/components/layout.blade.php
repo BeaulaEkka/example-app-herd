@@ -38,7 +38,10 @@
                         </div>
                         <div class="hidden md:block">
                             <div class="ml-4 flex items-center md:ml-6">
-                                <x-nav-link href="/login">Log In</x-nav-link>
+                                @guest
+                                    <x-nav href="/login" :active="request()->is('login')">Log In</x-nav>
+                                    <x-nav href="/register" :active="request()->is('register')">Register</x-nav>
+                                @endguest
 
                             </div>
                         </div>
