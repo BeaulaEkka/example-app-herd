@@ -73,7 +73,7 @@
 
                         <!--Confirm Password Field -->
                         <x-form-field>
-                            <x-form-label for="salary">Confirm Password</x-form-label>
+                            <x-form-label for="password_confirmation">Confirm Password</x-form-label>
                             <div class="mt-2">
                                 <x-form-input name="password_confirmation" id="password_confirmation" type="password" />
                             </div>

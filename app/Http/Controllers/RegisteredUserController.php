@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 
 class RegisteredUserController extends Controller
@@ -30,12 +31,14 @@ class RegisteredUserController extends Controller
         );
 
         //create
-        User::create([
+        $user = User::create(
             $ValidatedAttributes,
-
-        ]);
+        );
         //login
+        Auth::login($user);
+
         //redirect
+        return redirect('/jobs');
 
     }
 }
