@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
@@ -61,8 +62,15 @@ class JobController extends Controller
 
     }
 
+    //edit
     public function edit(Job $job)
     {
+        if (Auth::guest()) {
+            return redirect('/login');
+        }
+        if ($job->employer->user->isNot(Auth::user())) {
+            abort(403);
+        };
         $job->load('tags', 'employer');
         $tags = Tag::all()->unique('name');
         $selectedTagIds = collect($job->toArray()['tags'])->pluck('id')->toArray();

@@ -23,8 +23,7 @@ class SessionController extends Controller
         if (!Auth::attempt($sessionAttributes)) {
             throw ValidationException::withMessages([
                 'email' => 'The provided credentials are incorrect.',
-                
-            ]);
+             ]);
         }
         //attempt to log in the user
         Auth::attempt($sessionAttributes);
