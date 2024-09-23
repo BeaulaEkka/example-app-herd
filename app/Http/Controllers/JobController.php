@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Models\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 class JobController extends Controller
 {
@@ -68,7 +66,7 @@ class JobController extends Controller
     {
         // Auth::user()->can('edit-job', $job);
 
-        Gate::authorize('edit-job', $job);
+        // Gate::authorize('edit-job', $job);
 
         $job->load('tags', 'employer');
         $tags = Tag::all()->unique('name');
@@ -107,7 +105,7 @@ class JobController extends Controller
 
     public function destroy(Job $job)
     {
-        Gate::authorize('delete-job', $job);
+        // Gate::authorize('delete-job', $job);//to be used without Job Policy
 
         $job->delete();
         return redirect('/jobs');

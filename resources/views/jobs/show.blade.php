@@ -35,7 +35,7 @@
 
         </div>
         <div class="flex justify-end">
-            @can('delete', $job)
+            @can('edit', $job)
                 <x-button href="/jobs/{{ $job->id }}/edit">Edit Job</x-button>
             @endcan
         </div>

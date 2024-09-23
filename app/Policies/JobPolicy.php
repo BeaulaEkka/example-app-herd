@@ -14,9 +14,9 @@ class JobPolicy
     }
 
     // Check if the user can delete the job
-    public function delete(User $user, Job $job): bool
-    {
-        return $job->employer->user->is($user);
-    }
+    // public function delete(User $user, Job $job): bool
+    // {
+    //     return $job->employer->user->is($user);
+    // }
 
 }
