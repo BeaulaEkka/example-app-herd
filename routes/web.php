@@ -3,12 +3,21 @@
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
+use App\Mail\JobPosted;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 //this has a shorthand
 // Route::get('/', function () {
 //     return view('home');
 // });
+
+Route::get('test', function () {
+    Mail::to('beaula_bee@yahoo.com')->send(
+        new JobPosted()
+    );
+    return 'Done';
+});
 
 Route::view('/', 'home');
 
