@@ -107,6 +107,8 @@ class JobController extends Controller
 
     public function destroy(Job $job)
     {
+        Gate::authorize('delete-job', $job);
+
         $job->delete();
         return redirect('/jobs');
     }

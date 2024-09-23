@@ -30,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
             return $job->employer->user->is($user);
         });
 
+        Gate::define('delete-job', function (User $user, Job $job) {
+            return $job->employer->user->is($user);
+        });
+
     }
 
 }

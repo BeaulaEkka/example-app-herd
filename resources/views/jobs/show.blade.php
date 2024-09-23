@@ -28,12 +28,14 @@
 
     <div class="flex justify-between items-center">
         <div>
-
-            <button form="delete-form"
-                class="bg-red-500 hover:bg-red-800 px-4 py-2 rounded-md text-white font-semibold">Delete</button>
+            @can('delete-job', $job)
+                <button form="delete-form"
+                    class="bg-red-500 hover:bg-red-800 px-4 py-2 rounded-md text-white font-semibold">Delete</button>
+            @endcan
 
         </div>
-        <div class="flex justify-end"> @can('edit-job', $job)
+        <div class="flex justify-end">
+            @can('edit-job', $job)
                 <x-button href="/jobs/{{ $job->id }}/edit">Edit Job</x-button>
             @endcan
         </div>
