@@ -66,8 +66,7 @@ class JobController extends Controller
     //edit
     public function edit(Job $job)
     {
-
-
+        // Auth::user()->can('edit-job', $job);
 
         Gate::authorize('edit-job', $job);
 

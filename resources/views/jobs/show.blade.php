@@ -25,10 +25,18 @@
         @endisset
 
     </div>
+
     <div class="flex justify-between items-center">
-        <div><button form="delete-form"
-                class="bg-red-500 hover:bg-red-800 px-4 py-2 rounded-md text-white font-semibold">Delete</button></div>
-        <div class="flex justify-end"><x-button href="/jobs/{{ $job->id }}/edit">Edit Job</x-button></div>
+        <div>
+
+            <button form="delete-form"
+                class="bg-red-500 hover:bg-red-800 px-4 py-2 rounded-md text-white font-semibold">Delete</button>
+
+        </div>
+        <div class="flex justify-end"> @can('edit-job', $job)
+                <x-button href="/jobs/{{ $job->id }}/edit">Edit Job</x-button>
+            @endcan
+        </div>
     </div>
 
     <form method="POST" action="/jobs/{{ $job->id }}" id="delete-form">
