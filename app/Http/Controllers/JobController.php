@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\JobPosted;
 use App\Models\Job;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class JobController extends Controller
 {
@@ -36,6 +39,7 @@ class JobController extends Controller
 
     }
 
+    //store
     public function store(Request $request)
     {
         $request->validate([
@@ -46,17 +50,23 @@ class JobController extends Controller
             'tags' => 'required|array|min:1',
             'tags.*' => 'exists:tags,id', // Validate each tag ID
         ]);
-        $jobListing = Job::create([
+        $job = Job::create([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'salary' => $request->input('salary'),
             'location' => $request->input('location'),
-            'employer_id' => 1,
+            'employer_id' => Auth::id(),
 
         ]);
+
         if ($request->has('tags')) {
-            $jobListing->tags()->sync($request->input('tags'));
+            $job->tags()->sync($request->input('tags'));
         }
+        //send mail
+        Mail::to($job->employer->user)->send(
+            new JobPosted($job)
+        );
+
         return redirect('/jobs');
 
     }

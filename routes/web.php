@@ -12,12 +12,6 @@ use Illuminate\Support\Facades\Route;
 //     return view('home');
 // });
 
-Route::get('test', function () {
-    Mail::to('beaula_bee@yahoo.com')->send(
-        new JobPosted()
-    );
-    return 'Done';
-});
 
 Route::view('/', 'home');
 
@@ -34,6 +28,7 @@ Route::get('/jobs/{job}/edit', [JobController::class, 'edit'])
     ->middleware('auth')
     ->can('edit', 'job');
 
+    //store
 Route::post('/jobs', [JobController::class, 'store'])
     ->middleware('auth');
 
