@@ -14,9 +14,9 @@ class JobController extends Controller
     public function index()
     {
         $jobs = Job::with('employer')->latest()->Paginate(10);
+
         return view('jobs.index', [
             'jobs' => $jobs,
-
         ]);
     }
 
@@ -55,7 +55,7 @@ class JobController extends Controller
             'description' => $request->input('description'),
             'salary' => $request->input('salary'),
             'location' => $request->input('location'),
-            'employer_id' => Auth::id(),
+            'employer_id' => Auth::user()->employer->id,
 
         ]);
 
@@ -63,22 +63,25 @@ class JobController extends Controller
             $job->tags()->sync($request->input('tags'));
         }
         //send mail
-        Mail::to($job->employer->user)->send(
-            new JobPosted($job)
-        );
+        // Check if the employer exists before sending the email
+        if ($job->employer && $job->employer->user) {
+            Mail::to($job->employer->user->email)->queue(new JobPosted($job));
+        } else {
+            // Handle the error case
+            \Log::error('Employer or User is null for Job ID: ' . $job->id);
+        }
 
         return redirect('/jobs');
-
     }
 
     //edit
     public function edit(Job $job)
     {
         // Auth::user()->can('edit-job', $job);
-
         // Gate::authorize('edit-job', $job);
 
-        $job->load('tags', 'employer');
+        $job->load(['tags', 'employer']);
+
         $tags = Tag::all()->unique('name');
         $selectedTagIds = collect($job->toArray()['tags'])->pluck('id')->toArray();
 

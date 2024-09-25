@@ -18,7 +18,7 @@ class JobPosted extends Mailable
      */
     public function __construct(public Job $job)
     {
-        //
+
     }
 
     /**
@@ -38,7 +38,7 @@ class JobPosted extends Mailable
     {
         return new Content(
             markdown: 'mail.job-posted',
-            
+
         );
     }
 

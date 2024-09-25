@@ -30,15 +30,18 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'admin' => false,
+            'role' => 'job_seeker', // Default role
+            'company_name' => null, // Default to null
+
         ];
     }
 
-    //User::factory()->admin()->create()
-    public function admin(): static
+    //User::factory()->role('job_seeker')->create();
+
+    public function role(string $role): static
     {
         return $this->state(fn(array $attributes) => [
-            'admin' => true,
+            'role' => $role,
         ]);
     }
 
@@ -51,4 +54,14 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    //User::factory()->employer('Example Corp')->create();
+    public function employer(string $companyName): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'role' => 'employer',
+            'company_name' => $companyName,
+        ]);
+    }
+
 }

@@ -18,10 +18,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('company_name')->nullable();
+
+            $table->string('role')->default('job_seeker'); // 'employer' or 'job_seeker'
             $table->rememberToken();
             $table->timestamps();
-            $table->boolean('admin')->default(false);
-            $table->string('name')->nullable();
+
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

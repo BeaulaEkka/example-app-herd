@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 
@@ -16,24 +17,38 @@ class RegisteredUserController extends Controller
         return view('auth.register', compact('tags'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-
         //validate
-        $ValidatedAttributes = request()->validate(
+        $request->validate(
             [
                 'first_name' => 'required|string',
                 'last_name' => 'required|string',
                 'email' => 'required|email|unique:users',
-                'password' => ['required', Password::default(), 'confirmed'], //password confirmed
+                'password' => ['required', Password::default(), 'confirmed'],
+                'role' => 'required|string|in:employer,job_seeker', // Ensure role is valid
+                'company_name' => 'required_if:role,employer|string|max:255', // Only required if role is employer,
 
             ]
         );
 
         //create
-        $user = User::create(
-            $ValidatedAttributes,
-        );
+        $user = User::create([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+            'role' => $request->input('role'), // Set admin flag
+            'company_name' => $request->input('company_name'), // Set company name
+        ]);
+
+        // If the user is an employer, create an employer profile
+        if ($user->isEmployer() && $request->filled('company_name')) {
+            $user->employer()->create([
+                'company_name' => $request->input('company_name'),
+            ]);
+        }
+
         //login
         Auth::login($user);
 

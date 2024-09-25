@@ -3,15 +3,12 @@
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
-use App\Mail\JobPosted;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 //this has a shorthand
 // Route::get('/', function () {
 //     return view('home');
 // });
-
 
 Route::view('/', 'home');
 
@@ -20,7 +17,7 @@ Route::get('/jobs/create', [JobController::class, 'create']);
 
 Route::delete('/jobs/{job}', [JobController::class, 'destroy'])
     ->middleware('auth')
-    ->can('delete', 'job');
+    ->can('edit', 'job');
 
 Route::get('/jobs/{job}', [JobController::class, 'show']);
 
@@ -28,7 +25,7 @@ Route::get('/jobs/{job}/edit', [JobController::class, 'edit'])
     ->middleware('auth')
     ->can('edit', 'job');
 
-    //store
+//store
 Route::post('/jobs', [JobController::class, 'store'])
     ->middleware('auth');
 
