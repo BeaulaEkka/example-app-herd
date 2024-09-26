@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\JobPosted;
+use App\Models\Employer;
 use App\Models\Job;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -50,12 +51,20 @@ class JobController extends Controller
             'tags' => 'required|array|min:1',
             'tags.*' => 'exists:tags,id', // Validate each tag ID
         ]);
+
+        // Find the employer record for the authenticated user
+        $employer = Employer::where('user_id', Auth::id())->first();
+
+        if (!$employer) {
+            return redirect()->back()->withErrors(['error' => 'You must be an employer to create a job.']);
+        }
+
         $job = Job::create([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'salary' => $request->input('salary'),
             'location' => $request->input('location'),
-            'employer_id' => Auth::user()->employer->id,
+            'employer_id' => $employer->id,
 
         ]);
 

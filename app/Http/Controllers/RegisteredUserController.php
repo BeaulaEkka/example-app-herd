@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employer;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class RegisteredUserController extends Controller
                 'last_name' => 'required|string',
                 'email' => 'required|email|unique:users',
                 'password' => ['required', Password::default(), 'confirmed'],
-                'role' => 'required|string|in:employer,job_seeker', // Ensure role is valid
+                'role' => 'required|string|in:employer,job_seeker',
                 'company_name' => 'required_if:role,employer|string|max:255', // Only required if role is employer,
 
             ]
@@ -39,14 +40,18 @@ class RegisteredUserController extends Controller
             'email' => $request->input('email'),
             'password' => bcrypt($request->input('password')),
             'role' => $request->input('role'), // Set admin flag
-            'company_name' => $request->input('company_name'), // Set company name
+            // 'company_name' => $request->input('company_name'),
         ]);
 
-        // If the user is an employer, create an employer profile
-        if ($user->isEmployer() && $request->filled('company_name')) {
-            $user->employer()->create([
-                'company_name' => $request->input('company_name'),
+        // If the user is an employer, create an employer record
+        if ($user->role === 'employer') {
+            $employer = Employer::create([
+                'user_id' => $user->id,
+                'company_name' => $request->input('company_name'), // Use company_name from request
             ]);
+
+            // Log to ensure employer was created
+            \Log::info('Employer created successfully', ['employer_id' => $employer->id]);
         }
 
         //login

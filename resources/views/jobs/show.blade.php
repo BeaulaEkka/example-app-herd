@@ -3,7 +3,7 @@
         Job Details
     </x-slot:heading>
     <h2 class="font-semibold text-blue-600 text-xl mb-4">{{ $job->title }}</h2>
-    <h3><strong>Company: </strong>{{ $job->employer->name }}</h3>
+    <h3><strong>Company: </strong>{{ $job->employer->company_name }}</h3>
     <p>This job pays {{ $job->salary }} per year.</p>
     <h3 class="font-bold text-md py-2">Job Description:</h3>
     <p>{{ $job->description }} </p>

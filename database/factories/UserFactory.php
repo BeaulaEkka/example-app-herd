@@ -23,6 +23,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $role = fake()->randomElement(['job_seeker', 'employer']);
+
         return [
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
@@ -30,8 +32,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'role' => 'job_seeker', // Default role
-            'company_name' => null, // Default to null
+            'role' => $role,
+            // 'company_name' => $role === 'employer' ? fake()->company() : null,
 
         ];
     }
