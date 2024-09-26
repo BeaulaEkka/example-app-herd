@@ -100,7 +100,11 @@
         <header class="bg-white shadow">
             <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center">
                 <h3 class="text-2xl font-bold tracking-tight text-gray-900">{{ $heading ?? 'Job Listing Website' }}</h3>
-                <x-button href="/jobs/create">Create Job</x-button>
+                @auth
+                    @if ($user->role === 'employer')
+                        <x-button href="/jobs/create">Create Job</x-button>
+                    @endif
+                @endauth
             </div>
         </header>
 

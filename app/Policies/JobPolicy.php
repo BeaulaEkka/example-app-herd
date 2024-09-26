@@ -19,4 +19,9 @@ class JobPolicy
     //     return $job->employer->user->is($user);
     // }
 
+    public function createJob(User $user): bool
+    {
+        return $user->role === 'employer';
+    }
+
 }

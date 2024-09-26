@@ -14,13 +14,10 @@ return new class extends Migration
         Schema::create('job_listings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employer_id')->constrained('employers')->onDelete('cascade');
-            // $table->foreignIdFor(Employer::class);
             $table->string('title');
             $table->text('description');
             $table->string('location');
             $table->string('salary');
-            // $table->string('tags')->nullable();
-
             $table->timestamps();
         });
     }

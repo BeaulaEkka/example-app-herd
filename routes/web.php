@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'home');
 
 Route::get('/jobs', [JobController::class, 'index']);
-Route::get('/jobs/create', [JobController::class, 'create']);
+
+Route::get('/jobs/create', [JobController::class, 'create'])
+    ->middleware('auth')
+;
 
 Route::delete('/jobs/{job}', [JobController::class, 'destroy'])
     ->middleware('auth')
