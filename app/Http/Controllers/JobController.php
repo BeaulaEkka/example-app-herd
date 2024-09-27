@@ -8,7 +8,7 @@ use App\Models\Job;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+use Mail;
 
 class JobController extends Controller
 {
@@ -75,11 +75,7 @@ class JobController extends Controller
         // Check if the employer exists before sending the email
         if ($job->employer && $job->employer->user) {
             Mail::to($job->employer->user->email)->queue(new JobPosted($job));
-        } else {
-            // Handle the error case
-            \Log::error('Employer or User is null for Job ID: ' . $job->id);
         }
-
         return redirect('/jobs');
     }
 
