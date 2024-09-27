@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\Route;
 //     return view('home');
 // });
 
+Route::get('test', function () {
+    dispatch(function () {
+        logger('Hello from the test queue');
+    });
+    return 'Done';
+});
+
 Route::view('/', 'home');
 
 Route::get('/jobs', [JobController::class, 'index']);
