@@ -37,8 +37,11 @@ class JobPosted extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.job-posted',
-
+            view: 'mail.job-posted', // Use the Blade view 'emails.job-posted'
+            with: [
+                'job' => $this->job,
+                'url' => url('/jobs/' . $this->job->id), // Pass the URL to the view
+            ],
         );
     }
 
