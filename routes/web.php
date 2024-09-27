@@ -3,6 +3,7 @@
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
+use App\Jobs\TranslateJob;
 use Illuminate\Support\Facades\Route;
 
 //this has a shorthand
@@ -11,9 +12,9 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('test', function () {
-    dispatch(function () {
-        logger('Hello from the test queue');
-    });
+    $jobListing = \App\Models\Job::first();
+
+    TranslateJob::dispatch($jobListing);
     return 'Done';
 });
 
